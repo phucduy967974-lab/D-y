@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Ngày Hôm Nay Là</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS chính - tối ưu cho Blogger */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+        }
+        
+        .key-container-wrapper {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        .key-box {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaeaea;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .key-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+        }
+        
+        .header-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .header-title h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+            color: #2980b9;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .header-title h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+        
+        .header-title p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .date-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .date-info i {
+            color: #e74c3c;
+            margin-right: 8px;
+        }
+        
+        .key-display {
+            margin-bottom: 25px;
+        }
+        
+        .key-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .key-label i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+        
+        #keyInput {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        
+        #keyInput:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        #keyInput.has-key {
+            border-color: #2ecc71;
+            background-color: #f9fffc;
+        }
+        
+        #keyInput.no-key {
+            border-color: #e74c3c;
+            background-color: #fffafa;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-copied {
+            background-color: #27ae60 !important;
+        }
+        
+        .btn-playing {
+            background-color: #e74c3c !important;
+        }
+        
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .time-info {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 30px;
+            margin-top: 10px;
+        }
+        
+        .time-info i {
+            color: #3498db;
+            margin-right: 8px;
+        }
+        
+        #clock {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .admin-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .admin-link:hover {
+            text-decoration: underline;
+            color: #2980b9;
+        }
+        
+        /* Hiệu ứng cho key khi được tải */
+        @keyframes pulseKey {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+        
+        .key-pulse {
+            animation: pulseKey 1.5s;
+        }
+        
+        /* Responsive cho mobile */
+        @media (max-width: 480px) {
+            .key-box {
+                padding: 20px;
+            }
+            
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-title h1 {
+                font-size: 22px;
+            }
+        }
+        
+        /* Animation cho container */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .key-box {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+    
+    <script>
+        // JavaScript giữ nguyên chức năng nhưng cải thiện UX
+        function updateTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            var day = now.getDate();
+            var month = now.getMonth() + 1;
+            var year = now.getFullYear();
+
+            // Định dạng thời gian
+            hours = (hours < 10 ? "0" : "") + hours;
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            var timeString = hours + ":" + minutes + ":" + seconds;
+            document.getElementById("clock").innerHTML = timeString;
+
+            // Cập nhật ngày
+            var dateString = `Hôm nay là ngày ${day}/${month}/${year}`;
+            document.getElementById("dateDisplay").innerHTML = `<i class="fas fa-calendar-alt"></i> ${dateString}`;
+
+            // Cập nhật tiêu đề
+            document.title = `Key Ngày ${day}/${month}/${year} Là`;
+
+            setTimeout(updateTime, 1000);
+        }
+
+        function getQueryParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const key = urlParams.get('ma');
+            const keyInput = document.getElementById('keyInput');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            if (key) {
+                keyInput.value = key;
+                keyInput.classList.add('has-key');
+                keyInput.classList.add('key-pulse');
+                
+                // Hiển thị thông báo nhỏ
+                showNotification('Đã tải key thành công!', 'success');
+                
+                // Kích hoạt nút copy
+                copyBtn.disabled = false;
+            } else {
+                keyInput.value = 'Không tìm thấy key';
+                keyInput.classList.add('no-key');
+                
+                // Vô hiệu hóa nút copy
+                copyBtn.disabled = true;
+                copyBtn.innerHTML = '<i class="fas fa-ban"></i> No Key';
+                copyBtn.classList.remove('btn-primary');
+                copyBtn.style.backgroundColor = '#95a5a6';
+            }
+            
+            // Xóa hiệu ứng pulse sau 2 giây
+            setTimeout(() => {
+                keyInput.classList.remove('key-pulse');
+            }, 2000);
+        }
+
+        function copyToClipboard() {
+            const keyInput = document.getElementById('keyInput');
+            const copyBtn = document.getElementById('copyBtn');
+            
+            if(keyInput.value === 'Không tìm thấy key') {
+                showNotification('Không có key để sao chép!', 'error');
+                return;
+            }
+            
+            keyInput.select();
+            document.execCommand('copy');
+            
+            // Thay đổi trạng thái nút copy
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Đã sao chép!';
+            copyBtn.classList.add('btn-copied');
+            
+            // Hiển thị thông báo
+            showNotification(`Đã sao chép key: ${keyInput.value}`, 'success');
+            
+            // Khôi phục nút sau 2 giây
+            setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Key';
+                copyBtn.classList.remove('btn-copied');
+            }, 2000);
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const musicButton = document.getElementById('musicButton');
+            const musicIcon = musicButton.querySelector('i');
+
+            if (music.paused) {
+                music.play();
+                musicButton.innerHTML = '<i class="fas fa-pause"></i> Pause Music';
+                musicButton.classList.add('btn-playing');
+                showNotification('Đã bật nhạc nền', 'info');
+            } else {
+                music.pause();
+                musicButton.innerHTML = '<i class="fas fa-play"></i> Play Music';
+                musicButton.classList.remove('btn-playing');
+                showNotification('Đã tắt nhạc nền', 'info');
+            }
+        }
+        
+        function showNotification(message, type) {
+            // Tạo thông báo tạm thời
+            const notification = document.createElement('div');
+            notification.className = 'notification-temp';
+            notification.innerHTML = `
+                <div class="notification-content ${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Thêm CSS cho thông báo
+            const style = document.createElement('style');
+            style.textContent = `
+                .notification-temp {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                }
+                
+                .notification-content {
+                    background: white;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border-left: 4px solid #3498db;
+                }
+                
+                .notification-content.success {
+                    border-left-color: #2ecc71;
+                }
+                
+                .notification-content.error {
+                    border-left-color: #e74c3c;
+                }
+                
+                .notification-content.info {
+                    border-left-color: #3498db;
+                }
+                
+                .notification-content i {
+                    font-size: 20px;
+                }
+                
+                .notification-content.success i {
+                    color: #2ecc71;
+                }
+                
+                .notification-content.error i {
+                    color: #e74c3c;
+                }
+                
+                .notification-content.info i {
+                    color: #3498db;
+                }
+                
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            
+            document.head.appendChild(style);
+            document.body.appendChild(notification);
+            
+            // Tự động xóa thông báo sau 3 giây
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                notification.style.transform = 'translateX(100%)';
+                notification.style.opacity = '0';
+                
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                    if (style.parentNode) {
+                        style.parentNode.removeChild(style);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        window.onload = function () {
+            updateTime();
+            getQueryParam();
+            
+            // Thêm hiệu ứng load cho container
+            const keyBox = document.querySelector('.key-box');
+            keyBox.style.opacity = '0';
+            keyBox.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                keyBox.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                keyBox.style.opacity = '1';
+                keyBox.style.transform = 'translateY(0)';
+            }, 100);
+        };
+    </script>
+</head>
+<body>
+    <!-- Nhạc nền -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://rr4---sn-npoeens7.googlevideo.com/videoplayback?expire=1738570417&ei=USagZ4Vk6_nE3w-x7KCJBg&ip=172.64.236.154&id=o-AAimGCMhLlnkFgQqbULLm4c5rLQiwpJXAB9aLLiMq4KH&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AY2Et-NhXWJuEA_aAiv4s4CMjS0GNJ5kVy9qweCNCESmMcFo7gwC7u2n02jFCTAEYi17h2MNMEdZl1cQ&spc=9kzgDe0cTB4wLXbrqCENjNXF39FeMaXArlp1tUthP0Mj7BFN6PRwObzbGw&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=ciOnzHLpGKSoPvsrdclhYhoQ&rqh=1&gir=yes&clen=12915678&dur=798.000&lmt=1726163663589433&keepalive=yes&lmw=1&fexp=24350590,24350737,24350827,24350933,24350961,24350977,24350999,24351028,24351059,24351082,51326932,51371294&c=TVHTML5&sefc=1&txp=5432434&n=oOVy0aSPT2m58w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSwwRgIhAPKZ2nx2-KWlh3R0I0SYZtqtlR_jtEfVtW2rPaxcmkXPAiEAi_3en6OQPBlkK_B2h-FQH5q1t9HtcCDfqV14w7YxDDw%3D&title=Cari+Pokemon+-+Mit+x+AM+Remix+%E2%9C%AA+Mochi+Entertainment+%7C%7C+Nh%E1%BA%A1c+Hot+Tiktok+Hay+Nh%E1%BA%A5t+2023%23mochi&rm=sn-h5q6l7l&rrc=104,80&req_id=442fafdb2aeca3ee&ipbypass=yes&redirect_counter=2&cm2rm=sn-8qj-2m0e7s&cms_redirect=yes&cmsv=e&met=1738548821,&mh=0l&mip=2001:ee0:4e1d:40f0:9918:bf84:9f64:6e22&mm=29&mn=sn-npoeens7&ms=rdu&mt=1738548536&mv=m&mvi=4&pl=48&rms=rdu,au&lsparams=ipbypass,met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AGluJ3MwRgIhAPO94cqTh07m1khvJ4OP-lmnxEMqYdMS4DdevPGj-IEbAiEAmoIOxCicTNa-4Z5bebL0gq_d-TwAiwySZjFQUB5sSu8%3D" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phần tử audio.
+    </audio>
+
+    <div class="key-container-wrapper">
+        <div class="key-box">
+            <div class="header-title">
+                <h1>KEY NGÀY HÔM NAY</h1>
+                <p>Nhận và quản lý key của bạn</p>
+            </div>
+            
+            <div class="date-info" id="dateDisplay">
+                <i class="fas fa-calendar-alt"></i> Đang tải ngày...
+            </div>
+            
+            <div class="key-display">
+                <div class="key-label">
+                    <i class="fas fa-key"></i> Key của bạn
+                </div>
+                <input type="text" id="keyInput" readonly placeholder="Đang tải key...">
+            </div>
+            
+            <div class="buttons">
+                <button class="btn btn-primary" id="copyBtn" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Copy Key
+                </button>
+                
+                <button class="btn btn-secondary" id="musicButton" onclick="toggleMusic()">
+                    <i class="fas fa-play"></i> Play Music
+                </button>
+            </div>
+            
+            <div class="footer">
+                <b>Copyright By 
+                    <a href="https://zalo.me/0822771058" class="admin-link" target="_blank">Nguyễn Duy Khánh</a>
+                </b>
+                
+                <div class="time-info">
+                    <i class="fas fa-clock"></i>
+                    Time: <span id="clock">00:00:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
